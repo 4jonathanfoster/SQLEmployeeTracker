@@ -72,7 +72,7 @@ function mainMenuOnStart() {
         inquirer.prompt({
 
             type: "input",
-            message: "What is the name of the department?",
+            message: "What's the Department name?",
             name: "deptName"
 
         }).then(function(answer) {
@@ -85,6 +85,69 @@ function mainMenuOnStart() {
                 startScreen()
             })
         })
+    }
+
+    function addRole() {
+        inquirer
+            .prompt([{
+                    type: "input",
+                    message: "What's the name of the role?",
+                    name: "roleName"
+                },
+                {
+                    type: "input",
+                    message: "What's the salary for this role?",
+                    name: "salaryTotal"
+                },
+                {
+                    type: "input",
+                    message: "What's the department id number?",
+                    name: "deptID"
+                }
+            ])
+            .then(function(answer) {
+
+
+                db.query("INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)", [answer.roleName, answer.salaryTotal, answer.deptID], function(err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    startScreen();
+                });
+            });
+    }
+
+    function addEmployee() {
+        inquirer
+            .prompt([{
+                    type: "input",
+                    message: "What's the first name of the employee?",
+                    name: "empFirstName"
+                },
+                {
+                    type: "input",
+                    message: "What's the last name of the employee?",
+                    name: "eeLastName"
+                },
+                {
+                    type: "input",
+                    message: "What's the employee's role id number?",
+                    name: "roleID"
+                },
+                {
+                    type: "input",
+                    message: "What's the manager id number?",
+                    name: "managerID"
+                }
+            ])
+            .then(function(answer) {
+
+
+                db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answer.empFirstName, answer.empLastName, answer.roleID, answer.managerID], function(err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                    startScreen();
+                });
+            });
     }
 
     function viewDept() {
@@ -104,7 +167,7 @@ function mainMenuOnStart() {
         inquirer.prompt([{
             type: "input",
             name: "newDept",
-            message: "What is the new department's name?"
+            message: "What's the new department's name?"
         }]).then(({ newDept }) => {
             const sqlString = `
         INSERT INTO department(name)
